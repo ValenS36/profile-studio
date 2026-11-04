@@ -41,10 +41,10 @@ export default function UsernameEffect({ name, effect = 'none', accentColor = '#
   if (effect === 'typewriter') return <TypewriterName key={name} name={name} accentColor={accentColor} />;
   if (effect === 'glitch') return <h1 className="name-effect-glitch" aria-label={name} style={{ '--name-accent': accentColor } as CSSProperties}>
     <span className="glitch-word" aria-hidden="true">
-      <span className="glitch-base">{name}</span>
-      <span className="glitch-slice glitch-slice-a">{name}</span>
-      <span className="glitch-slice glitch-slice-b">{name}</span>
-      <span className="glitch-slice glitch-slice-scan">{name}</span>
+      <span className="glitch-reserve">{name}</span>
+      <span className="glitch-band glitch-band-top">{name}</span>
+      <span className="glitch-band glitch-band-middle">{name}</span>
+      <span className="glitch-band glitch-band-bottom">{name}</span>
     </span>
   </h1>;
   if (effect === 'rainbow') return <h1 className="name-effect-rainbow"><span>{name}</span></h1>;

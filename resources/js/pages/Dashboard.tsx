@@ -522,7 +522,7 @@ export default function Dashboard({
 
                   {form.data.nameEffect === 'glitch' && (
                     <p className="helper">
-                      Glitch berlapis dengan potongan pink–cyan, scanline, dan distorsi singkat pada teks utama. Glow mengikuti warna aksen dan jeda menjaga nama tetap terbaca.
+                      Huruf utama terbelah menjadi tiga bagian yang bergeser berlawanan, miring, dan meregang dalam hentakan singkat. Warna pink–cyan menjadi aksen distorsi; nama kembali utuh di antara hentakan.
                     </p>
                   )}
 
