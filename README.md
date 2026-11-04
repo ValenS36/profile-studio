@@ -105,4 +105,4 @@ The default `MAIL_MAILER=log` is for local development: reset emails appear in `
 
 ## Username effects
 
-Glitch uses sliced pink/cyan layers and accent-colored glow; rainbow uses a flowing multicolor gradient; typewriter loops with grapheme-aware typing and reserved layout space. All three respect reduced motion. Preview them from the dashboard on desktop/mobile and publish to apply the selected effect to the public profile.
+Glitch uses sliced pink/cyan layers and accent-colored glow; rainbow eases the entire font color through the RGB spectrum; typewriter loops with grapheme-aware typing and reserved layout space. With reduced motion enabled, explicitly selected name effects remain visible: glitch uses slow opacity changes without jitter, RGB runs more slowly, and typewriter types more slowly with a steady cursor. Preview them from the dashboard on desktop/mobile and publish to apply the selected effect to the public profile.

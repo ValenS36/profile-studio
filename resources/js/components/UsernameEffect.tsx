@@ -9,8 +9,10 @@ function TypewriterName({ name, accentColor }: { name: string; accentColor: stri
   const [text, setText] = useState(name);
 
   useEffect(() => {
-    if (reducedMotion || !name) { setText(name); return; }
-    const letters = Array.from(new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(name), part => part.segment);
+    if (!name) { setText(name); return; }
+    const letters = typeof Intl.Segmenter === 'function'
+      ? Array.from(new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(name), part => part.segment)
+      : Array.from(name);
     let count = 0;
     let deleting = false;
     let timer: ReturnType<typeof setTimeout>;
@@ -18,7 +20,7 @@ function TypewriterName({ name, accentColor }: { name: string; accentColor: stri
     const tick = () => {
       count += deleting ? -1 : 1;
       setText(letters.slice(0, count).join(''));
-      let delay = deleting ? 48 : 95;
+      let delay = reducedMotion ? 180 : deleting ? 48 : 95;
       if (count === letters.length) { deleting = true; delay = 2400; }
       else if (count === 0) { deleting = false; delay = 650; }
       timer = setTimeout(tick, delay);
@@ -30,7 +32,7 @@ function TypewriterName({ name, accentColor }: { name: string; accentColor: stri
   return <h1 className="name-effect-typewriter" aria-label={name} style={{ '--name-accent': accentColor } as CSSProperties}>
     <span className="typewriter-layout" aria-hidden="true">
       <span className="typewriter-reserve">{name}<span className="typewriter-cursor">▎</span></span>
-      <span className="typewriter-live">{reducedMotion ? name : text}<span className="typewriter-cursor">▎</span></span>
+      <span className="typewriter-live">{text}<span className="typewriter-cursor">▎</span></span>
     </span>
   </h1>;
 }

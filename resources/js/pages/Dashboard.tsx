@@ -534,12 +534,12 @@ export default function Dashboard({
 
                   {form.data.nameEffect === 'rainbow' && (
                     <p className="helper">
-                      Setiap huruf nama memiliki warna berbeda yang bergeser perlahan sepanjang spektrum warna. Efek RGB yang halus dan berkelanjutan.
+                      Seluruh warna font berganti bersama melalui spektrum RGB dengan transisi ease-in-out yang halus dan berulang.
                     </p>
                   )}
 
                   <p className="helper">
-                    Perubahan langsung terlihat pada live preview di samping.
+                    Perubahan langsung terlihat pada live preview di samping. Jika pengurangan gerakan aktif di perangkat, efek tetap terlihat dengan animasi lebih lembut.
                   </p>
                 </>
               )}

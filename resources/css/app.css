@@ -433,12 +433,12 @@
   font-weight: 650;
 }
 
-/* Username effects: stable layout, decorative layers and reduced-motion support. */
+/* Explicitly selected username effects; reduced motion uses gentler variants. */
 .glitch-word { position:relative; display:inline-block; max-width:100%; isolation:isolate; }
 .glitch-base { position:relative; color:#fff; text-shadow:0 0 18px color-mix(in srgb,var(--name-accent) 45%,transparent); }
 .glitch-slice { position:absolute; inset:0; pointer-events:none; opacity:0; }
-.glitch-slice-a { color:#ff578f; text-shadow:-2px 0 #ff578f; animation:signal-slice 4.8s steps(1,end) infinite; }
-.glitch-slice-b { color:#62f8ff; text-shadow:2px 0 #62f8ff; animation:signal-slice 4.8s steps(1,end) infinite reverse; }
+.glitch-slice-a { color:#ff578f; text-shadow:-2px 0 #ff578f; animation:signal-slice 2.8s steps(1,end) infinite; }
+.glitch-slice-b { color:#62f8ff; text-shadow:2px 0 #62f8ff; animation:signal-slice 2.8s steps(1,end) infinite reverse; }
 @keyframes signal-slice {
   0%, 12%, 28%, 100% { opacity:0; transform:none; clip-path:inset(0); }
   3% { opacity:.85; clip-path:inset(12% 0 68%); transform:translate(-5px,0) skewX(-8deg); }
@@ -453,23 +453,33 @@
 .typewriter-live { text-shadow:0 0 18px color-mix(in srgb,var(--name-accent) 30%,transparent); }
 .typewriter-cursor { color:var(--name-accent); font-weight:400; text-shadow:0 0 12px currentColor; animation:caret-pulse 1s steps(2,end) infinite; }
 @keyframes caret-pulse { 50% { opacity:0; } }
+/* Animate the font color itself, not a moving gradient. */
 .name-effect-rainbow > span {
-  color:#e4bcff;
-  background:linear-gradient(110deg,#ff8db4 0%,#ffdb91 17%,#a7ffc9 34%,#88e8ff 50%,#b9a1ff 67%,#ff8db4 83%,#ffdb91 100%);
-  background-size:300% 100%;
-  background-clip:text;
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 9px #b6a2ff55);
-  animation:prism-flow 7s linear infinite;
+  color:#ff6090;
+  background:none;
+  -webkit-text-fill-color:currentColor;
+  text-shadow:0 0 16px currentColor;
+  animation:username-rgb 8s ease-in-out infinite;
 }
-@keyframes prism-flow { from { background-position:0% 50%; } to { background-position:100% 50%; } }
+@keyframes username-rgb {
+  0%,100% { color:#ff6090; }
+  16.67% { color:#ffae57; }
+  33.33% { color:#ffe779; }
+  50% { color:#61efaa; }
+  66.67% { color:#62d9ff; }
+  83.33% { color:#bb87ff; }
+}
 .auth-status { margin-top:20px; padding:14px; border:1px solid #5b4878; border-radius:10px; background:#241d32; color:#dfd1fa; font-size:13px; line-height:1.7; }
 @media(prefers-reduced-motion:reduce) {
-  .glitch-slice { display:none; }
-  .typewriter-cursor { animation:none; }
-  .name-effect-rainbow > span { animation:none; }
+  /* Keep explicitly chosen name effects visible without rapid spatial movement. */
+  .glitch-slice-a { animation:signal-gentle 5s ease-in-out infinite !important; }
+  .glitch-slice-b { animation:signal-gentle 5s ease-in-out -2.5s infinite !important; }
+  .glitch-slice-a { clip-path:inset(18% 0 60%); translate:-2px 0; }
+  .glitch-slice-b { clip-path:inset(60% 0 18%); translate:2px 0; }
+  .typewriter-cursor { animation:none !important; }
+  .name-effect-rainbow > span { animation:username-rgb 16s ease-in-out infinite !important; }
 }
+@keyframes signal-gentle { 0%,100% { opacity:.15; } 50% { opacity:.8; } }
 
 /* Intro Overlay Animation */
 .public-profile-root {
