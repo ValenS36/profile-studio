@@ -434,24 +434,58 @@
 }
 
 /* Explicitly selected username effects; reduced motion uses gentler variants. */
+/* Independent slices, chromatic separation and short signal tears. */
 .glitch-word { position:relative; display:inline-block; max-width:100%; isolation:isolate; }
-.glitch-base { position:relative; color:#fff; text-shadow:0 0 18px color-mix(in srgb,var(--name-accent) 45%,transparent); }
-.glitch-slice { position:absolute; inset:0; pointer-events:none; opacity:0; }
-.glitch-slice-a { color:#ff578f; text-shadow:-2px 0 #ff578f; animation:signal-slice 2.8s steps(1,end) infinite; }
-.glitch-slice-b { color:#62f8ff; text-shadow:2px 0 #62f8ff; animation:signal-slice 2.8s steps(1,end) infinite reverse; }
-@keyframes signal-slice {
-  0%, 12%, 28%, 100% { opacity:0; transform:none; clip-path:inset(0); }
-  3% { opacity:.85; clip-path:inset(12% 0 68%); transform:translate(-5px,0) skewX(-8deg); }
-  6% { opacity:.85; clip-path:inset(58% 0 16%); transform:translate(5px,0); }
-  9% { opacity:.65; clip-path:inset(35% 0 45%); transform:translate(-3px,0); }
-  23% { opacity:.8; clip-path:inset(72% 0 8%); transform:translate(4px,0) skewX(5deg); }
-  26% { opacity:.6; clip-path:inset(18% 0 65%); transform:translate(-4px,0); }
+.glitch-base {
+  position:relative; display:block; color:#fff;
+  text-shadow:-1px 0 #ff578f88,1px 0 #62f8ff88,0 0 18px color-mix(in srgb,var(--name-accent) 45%,transparent);
+  animation:signal-tear 3.6s steps(1,end) infinite;
 }
-.typewriter-layout { display:inline-grid; max-width:100%; text-align:left; }
+.glitch-slice { position:absolute; inset:0; pointer-events:none; opacity:0; }
+.glitch-slice-a { color:#ff578f; text-shadow:-3px 0 #ff578f,0 0 9px #ff578f88; animation:signal-slice-a 3.6s steps(1,end) infinite; }
+.glitch-slice-b { color:#62f8ff; text-shadow:3px 0 #62f8ff,0 0 9px #62f8ff88; animation:signal-slice-b 3.6s steps(1,end) infinite; }
+.glitch-slice-scan {
+  color:var(--name-accent); text-shadow:0 0 7px currentColor;
+  mask-image:repeating-linear-gradient(to bottom,#000 0 2px,transparent 2px 5px);
+  animation:signal-scan 3.6s steps(1,end) infinite;
+}
+@keyframes signal-slice-a {
+  0%,14%,45%,64%,100% { opacity:0; transform:none; clip-path:inset(0); }
+  3% { opacity:.95; clip-path:inset(8% 0 68%); transform:translate(-7px,-1px) skewX(-10deg); }
+  7% { opacity:.85; clip-path:inset(47% 0 27%); transform:translate(6px,0); }
+  11% { opacity:.9; clip-path:inset(76% 0 5%); transform:translate(-4px,1px); }
+  38% { opacity:.9; clip-path:inset(28% 0 45%); transform:translate(-8px,0) skewX(8deg); }
+  42% { opacity:.8; clip-path:inset(60% 0 20%); transform:translate(4px,0); }
+  58% { opacity:.85; clip-path:inset(12% 0 70%); transform:translate(-5px,0); }
+  61% { opacity:.7; clip-path:inset(65% 0 12%); transform:translate(5px,0); }
+}
+@keyframes signal-slice-b {
+  0%,16%,47%,66%,100% { opacity:0; transform:none; clip-path:inset(0); }
+  4% { opacity:.95; clip-path:inset(60% 0 15%); transform:translate(7px,1px) skewX(8deg); }
+  8% { opacity:.85; clip-path:inset(15% 0 60%); transform:translate(-5px,0); }
+  12% { opacity:.9; clip-path:inset(37% 0 43%); transform:translate(4px,-1px); }
+  39% { opacity:.9; clip-path:inset(65% 0 8%); transform:translate(8px,0) skewX(-8deg); }
+  43% { opacity:.8; clip-path:inset(10% 0 72%); transform:translate(-4px,0); }
+  59% { opacity:.85; clip-path:inset(40% 0 35%); transform:translate(5px,0); }
+  63% { opacity:.7; clip-path:inset(20% 0 60%); transform:translate(-4px,0); }
+}
+@keyframes signal-tear {
+  0%,7%,14%,42%,47%,64%,100% { transform:none; }
+  3% { transform:skewX(-3deg); }
+  11% { transform:translateX(1px) skewX(2deg); }
+  38% { transform:skewX(3deg); }
+  59% { transform:skewX(-2deg); }
+}
+@keyframes signal-scan {
+  0%,17%,49%,68%,100% { opacity:0; transform:none; }
+  5%,40%,60% { opacity:.7; transform:translateX(2px); }
+  10%,44%,64% { opacity:.35; transform:translateX(-2px); }
+}
+.typewriter-layout { display:inline-grid; max-width:100%; text-align:center; }
 .typewriter-reserve,.typewriter-live { grid-area:1/1; overflow-wrap:anywhere; white-space:pre-wrap; }
 .typewriter-reserve { visibility:hidden; }
 .typewriter-live { text-shadow:0 0 18px color-mix(in srgb,var(--name-accent) 30%,transparent); }
-.typewriter-cursor { color:var(--name-accent); font-weight:400; text-shadow:0 0 12px currentColor; animation:caret-pulse 1s steps(2,end) infinite; }
+.typewriter-cursor { display:inline-block; width:0; overflow:visible; vertical-align:baseline; color:var(--name-accent); font-weight:400; text-shadow:0 0 12px currentColor; animation:caret-pulse 1s steps(2,end) infinite; }
 @keyframes caret-pulse { 50% { opacity:0; } }
 /* Animate the font color itself, not a moving gradient. */
 .name-effect-rainbow > span {
@@ -472,6 +506,8 @@
 .auth-status { margin-top:20px; padding:14px; border:1px solid #5b4878; border-radius:10px; background:#241d32; color:#dfd1fa; font-size:13px; line-height:1.7; }
 @media(prefers-reduced-motion:reduce) {
   /* Keep explicitly chosen name effects visible without rapid spatial movement. */
+  .glitch-base { animation:none !important; }
+  .glitch-slice-scan { display:none; }
   .glitch-slice-a { animation:signal-gentle 5s ease-in-out infinite !important; }
   .glitch-slice-b { animation:signal-gentle 5s ease-in-out -2.5s infinite !important; }
   .glitch-slice-a { clip-path:inset(18% 0 60%); translate:-2px 0; }

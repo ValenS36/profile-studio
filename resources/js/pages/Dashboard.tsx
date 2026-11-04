@@ -522,13 +522,13 @@ export default function Dashboard({
 
                   {form.data.nameEffect === 'glitch' && (
                     <p className="helper">
-                      Glitch dengan potongan teks bergeser, pemisahan warna pink–cyan, dan glow mengikuti warna aksen. Jeda antar distorsi menjaga nama tetap mudah dibaca.
+                      Glitch berlapis dengan potongan pink–cyan, scanline, dan distorsi singkat pada teks utama. Glow mengikuti warna aksen dan jeda menjaga nama tetap terbaca.
                     </p>
                   )}
 
                   {form.data.nameEffect === 'typewriter' && (
                     <p className="helper">
-                      Nama diketik, berhenti sejenak, lalu dihapus dan diulang dengan kursor bercahaya. Ruang nama tetap stabil, termasuk untuk emoji.
+                      Nama diketik, berhenti sejenak, lalu dihapus dan diulang dengan kursor bercahaya. Teks tetap di tengah selama mengetik dan menghapus, dengan ruang nama stabil termasuk untuk emoji.
                     </p>
                   )}
 

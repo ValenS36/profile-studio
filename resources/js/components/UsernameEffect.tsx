@@ -44,6 +44,7 @@ export default function UsernameEffect({ name, effect = 'none', accentColor = '#
       <span className="glitch-base">{name}</span>
       <span className="glitch-slice glitch-slice-a">{name}</span>
       <span className="glitch-slice glitch-slice-b">{name}</span>
+      <span className="glitch-slice glitch-slice-scan">{name}</span>
     </span>
   </h1>;
   if (effect === 'rainbow') return <h1 className="name-effect-rainbow"><span>{name}</span></h1>;
