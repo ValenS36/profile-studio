@@ -1,104 +1,49 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
+import { useReducedMotion } from 'motion/react';
 
 export type NameEffect = 'none' | 'glitch' | 'typewriter' | 'rainbow';
+interface UsernameEffectProps { name: string; effect: NameEffect; accentColor?: string }
 
-interface UsernameEffectProps {
-  name: string;
-  effect: NameEffect;
-  accentColor?: string;
-}
-
-/* ─── Glitch Effect ─── */
-function GlitchName({ name, accentColor }: { name: string; accentColor: string }) {
-  return (
-    <h1
-      className="name-effect-glitch"
-      data-text={name}
-      style={{ '--accent': accentColor } as React.CSSProperties}
-    >
-      <span className="glitch-base">{name}</span>
-    </h1>
-  );
-}
-
-/* ─── Typewriter Effect (Smooth Looping) ─── */
 function TypewriterName({ name, accentColor }: { name: string; accentColor: string }) {
-  const [displayText, setDisplayText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [loopNum, setLoopNum] = useState(0);
+  const reducedMotion = useReducedMotion();
+  const [text, setText] = useState(name);
 
   useEffect(() => {
-    // Reset when name changes
-    setDisplayText('');
-    setIsDeleting(false);
-  }, [name]);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-
-    if (!isDeleting) {
-      // Typing forward
-      if (displayText.length < name.length) {
-        timer = setTimeout(() => {
-          setDisplayText(name.slice(0, displayText.length + 1));
-        }, 85);
-      } else {
-        // Full name reached, pause before deleting
-        timer = setTimeout(() => {
-          setIsDeleting(true);
-        }, 2200);
-      }
-    } else {
-      // Backspacing
-      if (displayText.length > 0) {
-        timer = setTimeout(() => {
-          setDisplayText(name.slice(0, displayText.length - 1));
-        }, 40);
-      } else {
-        // Completely deleted, pause briefly then start typing again
-        timer = setTimeout(() => {
-          setIsDeleting(false);
-          setLoopNum((prev) => prev + 1);
-        }, 500);
-      }
-    }
-
+    if (reducedMotion || !name) { setText(name); return; }
+    const letters = Array.from(new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(name), part => part.segment);
+    let count = 0;
+    let deleting = false;
+    let timer: ReturnType<typeof setTimeout>;
+    setText('');
+    const tick = () => {
+      count += deleting ? -1 : 1;
+      setText(letters.slice(0, count).join(''));
+      let delay = deleting ? 48 : 95;
+      if (count === letters.length) { deleting = true; delay = 2400; }
+      else if (count === 0) { deleting = false; delay = 650; }
+      timer = setTimeout(tick, delay);
+    };
+    timer = setTimeout(tick, 450);
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, name, loopNum]);
+  }, [name, reducedMotion]);
 
-  return (
-    <h1 className="name-effect-typewriter">
-      <span className="typewriter-text">{displayText}</span>
-      <span className="typewriter-cursor" style={{ color: accentColor }}>
-        |
-      </span>
-    </h1>
-  );
+  return <h1 className="name-effect-typewriter" aria-label={name} style={{ '--name-accent': accentColor } as CSSProperties}>
+    <span className="typewriter-layout" aria-hidden="true">
+      <span className="typewriter-reserve">{name}<span className="typewriter-cursor">▎</span></span>
+      <span className="typewriter-live">{reducedMotion ? name : text}<span className="typewriter-cursor">▎</span></span>
+    </span>
+  </h1>;
 }
 
-/* ─── Rainbow (RGB Ease Flow) ─── */
-function RainbowName({ name }: { name: string }) {
-  return (
-    <h1 className="name-effect-rainbow" data-text={name}>
-      {name}
-    </h1>
-  );
-}
-
-/* ─── Main Export ─── */
-export default function UsernameEffect({
-  name,
-  effect = 'none',
-  accentColor = '#b6a2ff',
-}: UsernameEffectProps) {
-  switch (effect) {
-    case 'glitch':
-      return <GlitchName name={name} accentColor={accentColor} />;
-    case 'typewriter':
-      return <TypewriterName name={name} accentColor={accentColor} />;
-    case 'rainbow':
-      return <RainbowName name={name} />;
-    default:
-      return <h1>{name}</h1>;
-  }
+export default function UsernameEffect({ name, effect = 'none', accentColor = '#b6a2ff' }: UsernameEffectProps) {
+  if (effect === 'typewriter') return <TypewriterName key={name} name={name} accentColor={accentColor} />;
+  if (effect === 'glitch') return <h1 className="name-effect-glitch" aria-label={name} style={{ '--name-accent': accentColor } as CSSProperties}>
+    <span className="glitch-word" aria-hidden="true">
+      <span className="glitch-base">{name}</span>
+      <span className="glitch-slice glitch-slice-a">{name}</span>
+      <span className="glitch-slice glitch-slice-b">{name}</span>
+    </span>
+  </h1>;
+  if (effect === 'rainbow') return <h1 className="name-effect-rainbow"><span>{name}</span></h1>;
+  return <h1>{name}</h1>;
 }

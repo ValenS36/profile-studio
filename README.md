@@ -94,3 +94,15 @@ Status pemeriksaan lingkungan pembuatan tercatat di `VERIFICATION.md`. Jalankan 
 Gunakan hosting PHP dengan disk persisten dan document root `public/`. Pasang HTTPS; atur `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL` domain, dan `SESSION_SECURE_COOKIE=true`. Jalankan build aset, migration, storage link, kemudian `php artisan config:cache`. Jangan mengekspos root proyek atau .env. Siapkan backup database dan storage.
 
 Upload aplikasi: avatar 5 MB, background 25 MB, audio 10 MB. Sesuaikan `upload_max_filesize` minimal 25M, `post_max_size` minimal 48M, dan batas web server agar upload beberapa file dalam satu request tidak terpotong.
+
+## Password recovery
+
+Login now includes **Lupa password?**. Reset links expire after 60 minutes and can only be used once. New passwords require at least 12 characters and matching confirmation. Requests use a generic response and are rate limited.
+
+The existing `password_reset_tokens` migration is used; run `php artisan migrate --force` when deploying if migrations are pending. Configure `APP_URL` with the actual HTTPS domain and configure `MAIL_MAILER=smtp`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_SCHEME`, and `MAIL_FROM_ADDRESS` for your mail provider in the server environment. Then run `php artisan config:clear` (or rebuild the production config cache). Never commit SMTP credentials.
+
+The default `MAIL_MAILER=log` is for local development: reset emails appear in `storage/logs/laravel.log` and are **not delivered to an inbox**. Verify actual delivery with your provider before enabling recovery in production.
+
+## Username effects
+
+Glitch uses sliced pink/cyan layers and accent-colored glow; rainbow uses a flowing multicolor gradient; typewriter loops with grapheme-aware typing and reserved layout space. All three respect reduced motion. Preview them from the dashboard on desktop/mobile and publish to apply the selected effect to the public profile.

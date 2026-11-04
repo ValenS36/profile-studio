@@ -522,13 +522,13 @@ export default function Dashboard({
 
                   {form.data.nameEffect === 'glitch' && (
                     <p className="helper">
-                      Efek glitch menampilkan distorsi teks yang berkedip secara acak setiap beberapa detik. Layer warna merah dan biru akan saling bergeser sekilas, menciptakan kesan digital yang khas.
+                      Glitch dengan potongan teks bergeser, pemisahan warna pink–cyan, dan glow mengikuti warna aksen. Jeda antar distorsi menjaga nama tetap mudah dibaca.
                     </p>
                   )}
 
                   {form.data.nameEffect === 'typewriter' && (
                     <p className="helper">
-                      Nama akan diketik satu huruf per huruf saat profil dibuka, lengkap dengan kursor berkedip. Efek hanya berjalan sekali saat halaman pertama kali dimuat.
+                      Nama diketik, berhenti sejenak, lalu dihapus dan diulang dengan kursor bercahaya. Ruang nama tetap stabil, termasuk untuk emoji.
                     </p>
                   )}
 
