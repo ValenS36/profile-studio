@@ -1,6 +1,6 @@
 import { useRef, type CSSProperties } from 'react';
 import { motion, MotionConfig } from 'motion/react';
-import { ExternalLink } from 'lucide-react';
+import SocialIcon from './SocialIcon';
 import type { Profile } from '../types';
 import AudioPlayer from './AudioPlayer';
 import BackgroundEffects from './BackgroundEffects';
@@ -77,7 +77,7 @@ export default function ProfileCard({
           style={{
             background: `rgba(24,23,34,${p.opacity / 100})`,
             backdropFilter: `blur(${p.blur}px)`,
-            borderRadius: p.radius,
+            borderRadius: `${Number(p.radius) || 0}px`,
             boxShadow: p.glow ? `0 0 65px ${p.accent}24` : undefined,
           }}
         >
@@ -90,7 +90,7 @@ export default function ProfileCard({
             )}
           </div>
 
-          <div className="tiny-label">MY LITTLE CORNER OF THE INTERNET</div>
+          {(p.tagline ?? 'MY LITTLE CORNER OF THE INTERNET') && <div className="tiny-label">{p.tagline ?? 'MY LITTLE CORNER OF THE INTERNET'}</div>}
 
           {/* Username with optional effect */}
           <UsernameEffect
@@ -104,25 +104,19 @@ export default function ProfileCard({
 
           {/* Social Links */}
           <div className="social-links">
-            {p.links.map((link, i) =>
-              preview ? (
-                <span className="social-pill" key={i}>
-                  {link.label}
-                  <ExternalLink size={13} />
-                </span>
-              ) : (
-                <a
-                  className="social-pill"
-                  key={i}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {link.label}
-                  <ExternalLink size={13} />
-                </a>
-              )
-            )}
+            {p.links.map((link, i) => (
+              <a
+                className="social-icon-link"
+                key={i}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.label}
+                title={link.label}
+              >
+                <SocialIcon url={link.url} label={link.label} />
+              </a>
+            ))}
           </div>
 
           {/* Custom Audio Player with Audio Visualizer */}

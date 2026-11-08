@@ -589,3 +589,8 @@
 }
 
 
+
+/* Icon-only social links keep a generous keyboard/touch target. */
+.social-icon-link { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; color:var(--accent); border-radius:10px; }
+.social-icon-link:hover { background:#ffffff0d; transform:translateY(-2px); }
+.social-icon-link svg { width:24px; height:24px; flex-shrink:0; }

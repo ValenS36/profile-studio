@@ -63,6 +63,7 @@ export default function Dashboard({
 
   const form = useForm<Draft>({
     ...profile,
+    tagline: profile.tagline ?? 'MY LITTLE CORNER OF THE INTERNET',
     avatarFile: null,
     backgroundFile: null,
     audioFile: null,
@@ -270,6 +271,16 @@ export default function Dashboard({
                       value={form.data.name}
                       onChange={(e) => form.setData('name', e.target.value)}
                     />
+                  </label>
+                  <label>
+                    Teks di atas nama
+                    <input
+                      maxLength={100}
+                      value={form.data.tagline}
+                      onChange={(e) => form.setData('tagline', e.target.value)}
+                      placeholder="MY LITTLE CORNER OF THE INTERNET"
+                    />
+                    <small>Kosongkan untuk menyembunyikan teks ini.</small>
                   </label>
                   <label>
                     Bio singkat
@@ -662,7 +673,7 @@ export default function Dashboard({
               {/* Tab: Social Links */}
               {tab === 'links' && (
                 <>
-                  <p className="helper">Tambahkan Discord, Roblox, Instagram, atau tautan lainnya.</p>
+                  <p className="helper">Tambahkan Discord, Roblox, Instagram, atau tautan lainnya. Profil menampilkan ikon saja, dikenali dari URL atau nama platform. Nama tetap muncul saat ikon disorot.</p>
                   {form.data.links.map((link, i) => (
                     <div className="link-editor" key={i}>
                       <label>
