@@ -444,7 +444,8 @@
 .glitch-band {
   position:absolute; inset:0; color:#fff; pointer-events:none;
   transform-origin:center;
-  text-shadow:0 0 14px color-mix(in srgb,var(--name-accent) 40%,transparent);
+  /* Blur inside a clipped band creates rectangular edges. Keep only sharp RGB offsets during bursts. */
+  text-shadow:none;
 }
 /* !important is scoped to the selected effect to override the global motion reset. */
 .glitch-band-top {
@@ -460,7 +461,7 @@
   animation:glitch-white-bottom var(--glitch-cycle) steps(1,end) infinite !important;
 }
 @keyframes glitch-white-top {
-  0%,15%,45%,64%,100% { transform:none; text-shadow:0 0 14px var(--name-accent); }
+  0%,15%,45%,64%,100% { transform:none; text-shadow:none; }
   2% { transform:translateX(calc(-1 * var(--glitch-distance))) skewX(-12deg); text-shadow:3px 0 #ff376f; }
   6% { transform:translateX(var(--glitch-distance)) skewX(7deg); text-shadow:-2px 0 #55edff; }
   10% { transform:translateX(calc(-.5 * var(--glitch-distance))); }
@@ -470,7 +471,7 @@
   61% { transform:translateX(calc(.5 * var(--glitch-distance))); }
 }
 @keyframes glitch-white-middle {
-  0%,16%,46%,65%,100% { transform:none; text-shadow:0 0 14px var(--name-accent); }
+  0%,16%,46%,65%,100% { transform:none; text-shadow:none; }
   2% { transform:translateX(var(--glitch-distance)) skewX(14deg) scaleX(1.05); text-shadow:-3px 0 #55edff; }
   6% { transform:translateX(calc(-1 * var(--glitch-distance))) skewX(-10deg); text-shadow:3px 0 #ff376f; }
   10% { transform:translateX(calc(.5 * var(--glitch-distance))) scaleX(.96); }
@@ -480,7 +481,7 @@
   62% { transform:translateX(calc(-.5 * var(--glitch-distance))); }
 }
 @keyframes glitch-white-bottom {
-  0%,14%,47%,64%,100% { transform:none; text-shadow:0 0 14px var(--name-accent); }
+  0%,14%,47%,64%,100% { transform:none; text-shadow:none; }
   3% { transform:translateX(calc(-.5 * var(--glitch-distance))) skewX(-6deg); text-shadow:2px 0 #ff376f; }
   7% { transform:translateX(var(--glitch-distance)) skewX(10deg); text-shadow:-2px 0 #55edff; }
   11% { transform:translateX(calc(-1 * var(--glitch-distance))); }
