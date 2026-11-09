@@ -32,6 +32,7 @@ class ProfileController extends Controller {
 
         $request->merge([
             'links' => $request->input('links', []),
+            'tagline' => $request->input('tagline', $p->draft['tagline'] ?? $defaults['tagline']),
             'visualizerEnabled' => $request->has('visualizerEnabled') ? $request->boolean('visualizerEnabled') : $defaults['visualizerEnabled'],
             'visualizerColorMode' => $request->input('visualizerColorMode', $defaults['visualizerColorMode']),
             'visualizerColor' => $request->input('visualizerColor', $defaults['visualizerColor']),
@@ -55,6 +56,7 @@ class ProfileController extends Controller {
 
         $data = $request->validate([
             'name' => 'required|string|max:80',
+            'tagline' => 'nullable|string|max:100',
             'bio' => 'nullable|string|max:240',
             'quote' => 'nullable|string|max:400',
             'accent' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/'],
@@ -116,6 +118,8 @@ class ProfileController extends Controller {
         }
 
         $data['links'] = array_map(fn($link) => ['label' => $link['label'], 'url' => $link['url']], $data['links']);
+        $data['tagline'] = $data['tagline'] ?? '';
+        $data['radius'] = (int) $data['radius'];
         $data['glow'] = $request->boolean('glow');
         $data['entrance'] = $request->boolean('entrance');
         $data['visualizerEnabled'] = $request->boolean('visualizerEnabled');

@@ -17,6 +17,7 @@ class Profile extends Model {
     public static function defaults(): array {
         return [
             'name' => 'Your name',
+            'tagline' => 'MY LITTLE CORNER OF THE INTERNET',
             'bio' => 'A little space on the internet.',
             'quote' => 'Make room for the things that make you, you.',
             'accent' => '#b6a2ff',
@@ -68,6 +69,9 @@ class Profile extends Model {
         if ($data === null) {
             return null;
         }
-        return array_merge(static::defaults(), $data);
+        $normalized = array_merge(static::defaults(), $data);
+        $normalized['radius'] = max(0, min(48, (int) $normalized['radius']));
+        $normalized['tagline'] = $normalized['tagline'] ?? '';
+        return $normalized;
     }
 }

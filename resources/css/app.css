@@ -7,21 +7,7 @@
     transition: none !important;
     scroll-behavior: auto !important;
   }
-  .name-effect-glitch {
-    animation: glitch-jitter 5s infinite ease-in-out !important;
-  }
-  .name-effect-glitch::before {
-    animation: glitch-anim-1 5s infinite ease-in-out !important;
-  }
-  .name-effect-glitch::after {
-    animation: glitch-anim-2 5s infinite ease-in-out !important;
-  }
-  .name-effect-rainbow {
-    animation: rgbFontEaseCycle 6s ease-in-out infinite !important;
-  }
-  .typewriter-cursor {
-    animation: typewriterBlink 0.8s step-end infinite !important;
-  }
+
 }
 
 /* Image Cropper Modal */
@@ -447,220 +433,91 @@
   font-weight: 650;
 }
 
-/* Username Effects */
-.name-effect-glitch {
-  position: relative;
-  color: #ffffff !important;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
-  letter-spacing: -0.5px;
-  animation: glitch-jitter 5s infinite ease-in-out !important;
+/* Explicitly selected username effects; reduced motion uses gentler variants. */
+/* The visible white glyphs themselves are split into three moving bands.
+   The complete name only reserves space; it must not cover the distortion. */
+.glitch-word {
+  position:relative; display:inline-block; max-width:100%; isolation:isolate;
+  --glitch-distance:8px; --glitch-cycle:3.2s;
 }
-.name-effect-glitch .glitch-base {
-  position: relative;
-  z-index: 1;
+.glitch-reserve { display:block; visibility:hidden; }
+.glitch-band {
+  position:absolute; inset:0; color:#fff; pointer-events:none;
+  transform-origin:center;
+  /* Blur inside a clipped band creates rectangular edges. Keep only sharp RGB offsets during bursts. */
+  text-shadow:none;
 }
-.name-effect-glitch::before,
-.name-effect-glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  pointer-events: none;
-  opacity: 0;
+/* !important is scoped to the selected effect to override the global motion reset. */
+.glitch-band-top {
+  clip-path:inset(0 0 66%);
+  animation:glitch-white-top var(--glitch-cycle) steps(1,end) infinite !important;
 }
-.name-effect-glitch::before {
-  left: -2px;
-  text-shadow: -2px 0 #ff0055, 0 0 12px rgba(255, 0, 85, 0.7);
-  color: #ff0055;
-  z-index: 2;
-  animation: glitch-anim-1 5s infinite ease-in-out !important;
+.glitch-band-middle {
+  clip-path:inset(34% 0 33%);
+  animation:glitch-white-middle var(--glitch-cycle) steps(1,end) infinite !important;
 }
-.name-effect-glitch::after {
-  left: 2px;
-  text-shadow: 2px 0 #00ffff, 0 0 12px rgba(0, 255, 255, 0.7);
-  color: #00ffff;
-  z-index: 3;
-  animation: glitch-anim-2 5s infinite ease-in-out !important;
+.glitch-band-bottom {
+  clip-path:inset(67% 0 0);
+  animation:glitch-white-bottom var(--glitch-cycle) steps(1,end) infinite !important;
 }
-
-/* Glitch timing: ~4s calm, ~1s burst, repeating every 5s cycle */
-@keyframes glitch-anim-1 {
-  0%, 79.9% {
-    opacity: 0;
-    transform: none;
-    clip-path: inset(0 0 0 0);
-  }
-  80% {
-    opacity: 0.95;
-    clip-path: inset(20% 0 50% 0);
-    transform: translate(-3px, 1px);
-  }
-  83% {
-    opacity: 0.9;
-    clip-path: inset(75% 0 10% 0);
-    transform: translate(3px, -1px);
-  }
-  86% {
-    opacity: 0.95;
-    clip-path: inset(10% 0 70% 0);
-    transform: translate(-2px, 2px);
-  }
-  89% {
-    opacity: 0.9;
-    clip-path: inset(45% 0 35% 0);
-    transform: translate(3px, -2px);
-  }
-  92% {
-    opacity: 0.95;
-    clip-path: inset(5% 0 85% 0);
-    transform: translate(-3px, 0);
-  }
-  95% {
-    opacity: 0.9;
-    clip-path: inset(85% 0 5% 0);
-    transform: translate(2px, 1px);
-  }
-  98% {
-    opacity: 0.95;
-    clip-path: inset(30% 0 40% 0);
-    transform: translate(-1px, -1px);
-  }
-  100% {
-    opacity: 0;
-    transform: none;
-    clip-path: inset(0 0 0 0);
-  }
+@keyframes glitch-white-top {
+  0%,15%,45%,64%,100% { transform:none; text-shadow:none; }
+  2% { transform:translateX(calc(-1 * var(--glitch-distance))) skewX(-12deg); text-shadow:3px 0 #ff376f; }
+  6% { transform:translateX(var(--glitch-distance)) skewX(7deg); text-shadow:-2px 0 #55edff; }
+  10% { transform:translateX(calc(-.5 * var(--glitch-distance))); }
+  39% { transform:translateX(var(--glitch-distance)) skewX(-8deg); }
+  42% { transform:translateX(calc(-.5 * var(--glitch-distance))); }
+  58% { transform:translateX(calc(-1 * var(--glitch-distance))) skewX(10deg); }
+  61% { transform:translateX(calc(.5 * var(--glitch-distance))); }
 }
-
-@keyframes glitch-anim-2 {
-  0%, 79.9% {
-    opacity: 0;
-    transform: none;
-    clip-path: inset(0 0 0 0);
-  }
-  80.5% {
-    opacity: 0.9;
-    clip-path: inset(65% 0 15% 0);
-    transform: translate(3px, -1px);
-  }
-  83.5% {
-    opacity: 0.95;
-    clip-path: inset(15% 0 70% 0);
-    transform: translate(-3px, 2px);
-  }
-  86.5% {
-    opacity: 0.9;
-    clip-path: inset(85% 0 5% 0);
-    transform: translate(2px, -2px);
-  }
-  89.5% {
-    opacity: 0.95;
-    clip-path: inset(30% 0 50% 0);
-    transform: translate(-2px, 1px);
-  }
-  92.5% {
-    opacity: 0.9;
-    clip-path: inset(55% 0 25% 0);
-    transform: translate(3px, -1px);
-  }
-  95.5% {
-    opacity: 0.95;
-    clip-path: inset(10% 0 80% 0);
-    transform: translate(-2px, 2px);
-  }
-  98.5% {
-    opacity: 0.9;
-    clip-path: inset(45% 0 35% 0);
-    transform: translate(1px, -1px);
-  }
-  100% {
-    opacity: 0;
-    transform: none;
-    clip-path: inset(0 0 0 0);
-  }
+@keyframes glitch-white-middle {
+  0%,16%,46%,65%,100% { transform:none; text-shadow:none; }
+  2% { transform:translateX(var(--glitch-distance)) skewX(14deg) scaleX(1.05); text-shadow:-3px 0 #55edff; }
+  6% { transform:translateX(calc(-1 * var(--glitch-distance))) skewX(-10deg); text-shadow:3px 0 #ff376f; }
+  10% { transform:translateX(calc(.5 * var(--glitch-distance))) scaleX(.96); }
+  39% { transform:translateX(calc(-1 * var(--glitch-distance))) skewX(12deg); }
+  43% { transform:translateX(calc(.5 * var(--glitch-distance))) scaleX(1.04); }
+  58% { transform:translateX(var(--glitch-distance)) skewX(-12deg); }
+  62% { transform:translateX(calc(-.5 * var(--glitch-distance))); }
 }
-
-@keyframes glitch-jitter {
-  0%, 79.9% {
-    transform: none;
-  }
-  81% {
-    transform: skewX(-2.5deg) scale(1.02);
-  }
-  85% {
-    transform: skewX(2.5deg) scale(0.99);
-  }
-  89% {
-    transform: skewX(-1.5deg) scale(1.01);
-  }
-  93% {
-    transform: skewX(1deg) scale(1.01);
-  }
-  97% {
-    transform: skewX(-0.5deg);
-  }
-  100% {
-    transform: none;
-  }
+@keyframes glitch-white-bottom {
+  0%,14%,47%,64%,100% { transform:none; text-shadow:none; }
+  3% { transform:translateX(calc(-.5 * var(--glitch-distance))) skewX(-6deg); text-shadow:2px 0 #ff376f; }
+  7% { transform:translateX(var(--glitch-distance)) skewX(10deg); text-shadow:-2px 0 #55edff; }
+  11% { transform:translateX(calc(-1 * var(--glitch-distance))); }
+  40% { transform:translateX(calc(.5 * var(--glitch-distance))) skewX(-8deg); }
+  44% { transform:translateX(calc(-.5 * var(--glitch-distance))); }
+  59% { transform:translateX(calc(-.5 * var(--glitch-distance))) skewX(8deg); }
+  62% { transform:translateX(calc(.5 * var(--glitch-distance))); }
 }
-
-.name-effect-typewriter {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: 44px;
-  color: #eeedf5;
+.typewriter-layout { display:inline-grid; max-width:100%; text-align:center; }
+.typewriter-reserve,.typewriter-live { grid-area:1/1; overflow-wrap:anywhere; white-space:pre-wrap; }
+.typewriter-reserve { visibility:hidden; }
+.typewriter-live { text-shadow:0 0 18px color-mix(in srgb,var(--name-accent) 30%,transparent); }
+.typewriter-cursor { display:inline-block; width:0; overflow:visible; vertical-align:baseline; color:var(--name-accent); font-weight:400; text-shadow:0 0 12px currentColor; animation:caret-pulse 1s steps(2,end) infinite; }
+@keyframes caret-pulse { 50% { opacity:0; } }
+/* Animate the font color itself, not a moving gradient. */
+.name-effect-rainbow > span {
+  color:#ff6090;
+  background:none;
+  -webkit-text-fill-color:currentColor;
+  text-shadow:0 0 16px currentColor;
+  animation:username-rgb 8s ease-in-out infinite;
 }
-.typewriter-text {
-  display: inline-block;
-  white-space: pre;
+@keyframes username-rgb {
+  0%,100% { color:#ff6090; }
+  16.67% { color:#ffae57; }
+  33.33% { color:#ffe779; }
+  50% { color:#61efaa; }
+  66.67% { color:#62d9ff; }
+  83.33% { color:#bb87ff; }
 }
-.typewriter-cursor {
-  display: inline-block;
-  margin-left: 3px;
-  font-weight: 300;
-  animation: typewriterBlink 0.8s step-end infinite !important;
-  text-shadow: 0 0 10px currentColor;
-}
-@keyframes typewriterBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* RGB Rainbow: smooth ease-in-out font color transition with matching glow */
-.name-effect-rainbow {
-  font-weight: 700 !important;
-  animation: rgbFontEaseCycle 6s ease-in-out infinite !important;
-}
-
-@keyframes rgbFontEaseCycle {
-  0%, 100% {
-    color: #ff2a6d !important;
-    text-shadow: 0 0 18px rgba(255, 42, 109, 0.7), 0 0 36px rgba(255, 42, 109, 0.35);
-  }
-  16.6% {
-    color: #ff9100 !important;
-    text-shadow: 0 0 18px rgba(255, 145, 0, 0.7), 0 0 36px rgba(255, 145, 0, 0.35);
-  }
-  33.3% {
-    color: #ffd600 !important;
-    text-shadow: 0 0 18px rgba(255, 214, 0, 0.7), 0 0 36px rgba(255, 214, 0, 0.35);
-  }
-  50% {
-    color: #00f576 !important;
-    text-shadow: 0 0 18px rgba(0, 245, 118, 0.7), 0 0 36px rgba(0, 245, 118, 0.35);
-  }
-  66.6% {
-    color: #00e5ff !important;
-    text-shadow: 0 0 18px rgba(0, 229, 255, 0.7), 0 0 36px rgba(0, 229, 255, 0.35);
-  }
-  83.3% {
-    color: #b833ff !important;
-    text-shadow: 0 0 18px rgba(184, 51, 255, 0.7), 0 0 36px rgba(184, 51, 255, 0.35);
-  }
+.auth-status { margin-top:20px; padding:14px; border:1px solid #5b4878; border-radius:10px; background:#241d32; color:#dfd1fa; font-size:13px; line-height:1.7; }
+@media(prefers-reduced-motion:reduce) {
+  /* Preserve actual text distortion, but use smaller, slower movements. */
+  .glitch-word { --glitch-distance:3px; --glitch-cycle:6s; }
+  .typewriter-cursor { animation:none !important; }
+  .name-effect-rainbow > span { animation:username-rgb 16s ease-in-out infinite !important; }
 }
 
 /* Intro Overlay Animation */
@@ -732,3 +589,8 @@
 }
 
 
+
+/* Icon-only social links keep a generous keyboard/touch target. */
+.social-icon-link { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; color:var(--accent); border-radius:10px; }
+.social-icon-link:hover { background:#ffffff0d; transform:translateY(-2px); }
+.social-icon-link svg { width:24px; height:24px; flex-shrink:0; }

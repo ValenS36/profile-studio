@@ -63,6 +63,7 @@ export default function Dashboard({
 
   const form = useForm<Draft>({
     ...profile,
+    tagline: profile.tagline ?? 'MY LITTLE CORNER OF THE INTERNET',
     avatarFile: null,
     backgroundFile: null,
     audioFile: null,
@@ -270,6 +271,16 @@ export default function Dashboard({
                       value={form.data.name}
                       onChange={(e) => form.setData('name', e.target.value)}
                     />
+                  </label>
+                  <label>
+                    Teks di atas nama
+                    <input
+                      maxLength={100}
+                      value={form.data.tagline}
+                      onChange={(e) => form.setData('tagline', e.target.value)}
+                      placeholder="MY LITTLE CORNER OF THE INTERNET"
+                    />
+                    <small>Kosongkan untuk menyembunyikan teks ini.</small>
                   </label>
                   <label>
                     Bio singkat
@@ -522,24 +533,24 @@ export default function Dashboard({
 
                   {form.data.nameEffect === 'glitch' && (
                     <p className="helper">
-                      Efek glitch menampilkan distorsi teks yang berkedip secara acak setiap beberapa detik. Layer warna merah dan biru akan saling bergeser sekilas, menciptakan kesan digital yang khas.
+                      Huruf utama terbelah menjadi tiga bagian yang bergeser berlawanan, miring, dan meregang dalam hentakan singkat. Warna pink–cyan menjadi aksen distorsi; nama kembali utuh di antara hentakan.
                     </p>
                   )}
 
                   {form.data.nameEffect === 'typewriter' && (
                     <p className="helper">
-                      Nama akan diketik satu huruf per huruf saat profil dibuka, lengkap dengan kursor berkedip. Efek hanya berjalan sekali saat halaman pertama kali dimuat.
+                      Nama diketik, berhenti sejenak, lalu dihapus dan diulang dengan kursor bercahaya. Teks tetap di tengah selama mengetik dan menghapus, dengan ruang nama stabil termasuk untuk emoji.
                     </p>
                   )}
 
                   {form.data.nameEffect === 'rainbow' && (
                     <p className="helper">
-                      Setiap huruf nama memiliki warna berbeda yang bergeser perlahan sepanjang spektrum warna. Efek RGB yang halus dan berkelanjutan.
+                      Seluruh warna font berganti bersama melalui spektrum RGB dengan transisi ease-in-out yang halus dan berulang.
                     </p>
                   )}
 
                   <p className="helper">
-                    Perubahan langsung terlihat pada live preview di samping.
+                    Perubahan langsung terlihat pada live preview di samping. Jika pengurangan gerakan aktif di perangkat, efek tetap terlihat dengan animasi lebih lembut.
                   </p>
                 </>
               )}
@@ -662,7 +673,7 @@ export default function Dashboard({
               {/* Tab: Social Links */}
               {tab === 'links' && (
                 <>
-                  <p className="helper">Tambahkan Discord, Roblox, Instagram, atau tautan lainnya.</p>
+                  <p className="helper">Tambahkan Discord, Roblox, Instagram, atau tautan lainnya. Profil menampilkan ikon saja, dikenali dari URL atau nama platform. Nama tetap muncul saat ikon disorot.</p>
                   {form.data.links.map((link, i) => (
                     <div className="link-editor" key={i}>
                       <label>

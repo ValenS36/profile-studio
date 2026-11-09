@@ -172,6 +172,30 @@ class ProfileStudioTest extends TestCase {
   $this->post('/dashboard/profile',$data)->assertSessionHasErrors('nameEffect');
  }
 
+ public function test_tagline_and_radius_round_trip_through_draft_and_publish(): void {
+  $u=$this->owner(); $data=Profile::defaults();
+  $data['tagline']='WELCOME TO MY SPACE';
+  // Multipart FormData submits even numeric inputs as strings.
+  $data['radius']='48';
+  $this->actingAs($u)->post('/dashboard/profile',$data)->assertSessionHasNoErrors();
+  $this->assertSame(48,Profile::findOrFail(1)->draft['radius']);
+  $this->get('/')->assertInertia(fn(Assert $page)=>$page->where('profile',null));
+  $this->post('/dashboard/publish')->assertSessionHasNoErrors();
+  $this->get('/')->assertInertia(fn(Assert $page)=>$page
+   ->where('profile.tagline','WELCOME TO MY SPACE')->where('profile.radius',48));
+  $data['tagline']=''; $data['radius']='0';
+  $this->post('/dashboard/profile',$data)->assertSessionHasNoErrors();
+  $this->post('/dashboard/publish');
+  $this->get('/')->assertInertia(fn(Assert $page)=>$page->where('profile.tagline','')->where('profile.radius',0));
+ }
+
+ public function test_tagline_validation_and_legacy_radius_normalization(): void {
+  $this->assertSame(28,Profile::normalize(['radius'=>'28'])['radius']);
+  $this->assertSame('MY LITTLE CORNER OF THE INTERNET',Profile::normalize([])['tagline']);
+  $u=$this->owner(); $data=Profile::defaults(); $data['tagline']=str_repeat('x',101);
+  $this->actingAs($u)->post('/dashboard/profile',$data)->assertSessionHasErrors('tagline');
+ }
+
  public function test_audio_stream_supports_http_range_requests(): void {
   Storage::fake('public');
   Storage::disk('public')->put('profile/sample.mp3', str_repeat('M', 5000));

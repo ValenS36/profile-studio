@@ -1,5 +1,6 @@
 export type Profile = {
   name: string;
+  tagline: string;
   bio: string;
   quote: string;
   accent: string;
